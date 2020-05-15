@@ -301,7 +301,7 @@
 "ZE" = (/obj/structure/railing{dir = 4},/turf/open/floor/plating/asteroid/basalt/airless,/area/space)
 "ZH" = (/obj/machinery/conveyor{dir = 1; id = "QMLoad2"},/turf/open/floor/plasteel,/area/space)
 "ZV" = (/obj/effect/turf_decal/stripes/line,/turf/open/floor/plasteel,/area/space)
-"ZZ" = (/obj/docking_port/stationary{id = "Surface_Level_Dock"; name = "Surface Level Dock"; roundstart_template = /datum/map_template/shuttle/elevator/tropical},/turf/open/transparent/openspace,/area/space)
+"ZZ" = (/obj/docking_port/stationary{id = "Surface_Level_Dock"; name = "Surface Level Dock"; roundstart_template = /datum/map_template/shuttle/elevator/sproutpost},/turf/open/transparent/openspace,/area/space)
 
 (1,1,1) = {"
 DtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtaYDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDtDt
