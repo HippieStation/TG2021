@@ -1,7 +1,7 @@
 "a" = (/obj/effect/turf_decal/stripes/line{dir = 10},/turf/open/floor/plasteel/dark,/area/shuttle/snowdin/elevator1)
 "b" = (/obj/effect/turf_decal/stripes/line{dir = 9},/turf/open/floor/plasteel/dark,/area/shuttle/snowdin/elevator1)
 "f" = (/obj/effect/turf_decal/stripes/line{dir = 1},/turf/open/floor/plasteel/dark,/area/shuttle/snowdin/elevator1)
-"p" = (/obj/effect/turf_decal/stripes/line,/obj/docking_port/mobile/elevator{id = "elevator_sproutpost"; name = "Sprout Post Elevator"},/turf/open/floor/plasteel/dark,/area/shuttle/snowdin/elevator1)
+"p" = (/obj/effect/turf_decal/stripes/line,/obj/docking_port/mobile/elevator{dwidth = 4; height = 5; id = "elevator_sproutpost"; name = "Sprout Post Elevator"; width = 9},/turf/open/floor/plasteel/dark,/area/shuttle/snowdin/elevator1)
 "t" = (/turf/open/floor/plasteel/dark,/area/shuttle/snowdin/elevator1)
 "B" = (/obj/effect/turf_decal/stripes/line{dir = 6},/turf/open/floor/plasteel/dark,/area/shuttle/snowdin/elevator1)
 "F" = (/obj/machinery/computer/shuttle/ferry{name = "Sprout Post Elevator"; possible_destinations = "Surface_Level_Dock;Cavern_Level_Dock;Lavaland_Level_Dock"; shuttleId = "elevator_sproutpost"},/obj/effect/turf_decal/stripes/line{dir = 1},/turf/open/floor/plasteel/dark,/area/shuttle/snowdin/elevator1)
