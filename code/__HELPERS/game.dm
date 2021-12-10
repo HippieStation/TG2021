@@ -1,4 +1,4 @@
-//supposedly the fastest way to do this according to https://gist.github.com/Giacom/be635398926bb463b42a
+//supposedly the fastest way to do this according to https://gist.github.com/Giacom/be635398926bb463b42a nigga
 #define RANGE_TURFS(RADIUS, CENTER) \
 	block( \
 	locate(max(CENTER.x-(RADIUS),1),          max(CENTER.y-(RADIUS),1),          CENTER.z), \
