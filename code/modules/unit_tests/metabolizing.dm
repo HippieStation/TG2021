@@ -74,6 +74,10 @@
 	syringe.reagents.add_reagent(meth.type, meth.addiction_threshold)
 	syringe.melee_attack_chain(syringe_user, syringe_user)
 
+	syringe.mode = SYRINGE_INJECT
+	syringe_user.a_intent = INTENT_HARM
+	syringe.afterattack(syringe_user, syringe_user, TRUE)
+
 	syringe_user.Life()
 
 	TEST_ASSERT(syringe_user.reagents.addiction_list && is_type_in_list(meth, syringe_user.reagents.addiction_list), "User is not addicted to meth after injecting the addiction threshold")
@@ -88,6 +92,10 @@
 	pill_two.reagents.add_reagent(meth.type, (meth.addiction_threshold * 0.5) + 1)
 	pill_two.attack(pill_syringe_user, pill_syringe_user)
 	syringe.melee_attack_chain(pill_syringe_user, pill_syringe_user)
+
+	pill_syringe_user.a_intent = INTENT_HARM
+	syringe.mode = SYRINGE_INJECT
+	syringe.afterattack(pill_syringe_user, pill_syringe_user, TRUE)
 
 	// Set the metabolism efficiency to 1.0 so it transfers all reagents to the body in one go.
 	pill_belly = pill_syringe_user.getorganslot(ORGAN_SLOT_STOMACH)

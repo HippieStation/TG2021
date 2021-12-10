@@ -111,7 +111,7 @@
 
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
 		changeNext_move(CLICK_CD_HANDCUFFED)   //Doing shit in cuffs shall be vey slow
-		UnarmedAttack(A, FALSE, modifiers)
+		UnarmedAttack(A)
 		return
 
 	if(in_throw_mode)
@@ -134,7 +134,7 @@
 		else
 			if(ismob(A))
 				changeNext_move(CLICK_CD_MELEE)
-			UnarmedAttack(A, FALSE, modifiers)
+			UnarmedAttack(A)
 		return
 
 	//Can't reach anything else in lockers or other weirdness
@@ -148,7 +148,7 @@
 		else
 			if(ismob(A))
 				changeNext_move(CLICK_CD_MELEE)
-			UnarmedAttack(A,1,modifiers)
+			UnarmedAttack(A,1)
 	else
 		if(W)
 			if(LAZYACCESS(modifiers, RIGHT_CLICK))
@@ -264,10 +264,8 @@
  *
  * proximity_flag is not currently passed to attack_hand, and is instead used
  * in human click code to allow glove touches only at melee range.
- *
- * modifiers is the click modifiers this attack had, used for
  */
-/mob/proc/UnarmedAttack(atom/A, proximity_flag, modifiers)
+/mob/proc/UnarmedAttack(atom/A, proximity_flag)
 	if(ismob(A))
 		changeNext_move(CLICK_CD_MELEE)
 	return

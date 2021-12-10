@@ -5,8 +5,8 @@
 	// Avoid all randomness in tests
 	ADD_TRAIT(puncher, TRAIT_PERFECT_ATTACKER, INNATE_TRAIT)
 
-	puncher.set_combat_mode(TRUE)
-	victim.attack_hand(puncher, list(RIGHT_CLICK = FALSE))
+	puncher.a_intent_change(INTENT_HARM)
+	victim.attack_hand(puncher)
 
 	TEST_ASSERT(victim.getBruteLoss() > 0, "Victim took no brute damage after being punched")
 
@@ -16,7 +16,7 @@
 	var/obj/item/storage/toolbox/toolbox = allocate(/obj/item/storage/toolbox)
 
 	tider.put_in_active_hand(toolbox, forced = TRUE)
-	tider.set_combat_mode(TRUE)
+	tider.a_intent_change(INTENT_HARM)
 	victim.attackby(toolbox, tider)
 
 	TEST_ASSERT(victim.getBruteLoss() > 0, "Victim took no brute damage after being hit by a toolbox")
@@ -27,8 +27,7 @@
 	var/obj/item/weldingtool/welding_tool = allocate(/obj/item/weldingtool)
 
 	attacker.put_in_active_hand(welding_tool, forced = TRUE)
-	attacker.set_combat_mode(TRUE)
-
+	attacker.a_intent_change(INTENT_HARM)
 	welding_tool.attack_self(attacker) // Turn it on
 	victim.attackby(welding_tool, attacker)
 
@@ -59,7 +58,7 @@
 	RegisterSignal(toolbox, COMSIG_ITEM_AFTERATTACK, .proc/post_attack_hit)
 
 	attacker.put_in_active_hand(toolbox, forced = TRUE)
-	attacker.set_combat_mode(TRUE)
+	attacker.a_intent_change(INTENT_HARM)
 	toolbox.melee_attack_chain(attacker, victim)
 
 	TEST_ASSERT(pre_attack_hit, "Pre-attack signal was not fired")
@@ -72,6 +71,7 @@
 	var/obj/item/storage/toolbox/toolbox = allocate(/obj/item/storage/toolbox)
 
 	victim.put_in_active_hand(toolbox, forced = TRUE)
+	attacker.a_intent_change(INTENT_DISARM)
 
 	var/obj/structure/barricade/dense_object = allocate(/obj/structure/barricade)
 
@@ -82,7 +82,7 @@
 
 	// First disarm, world should now look like:
 	// Attacker --> Empty space --> Victim --> Wall
-	victim.attack_hand(attacker, list(RIGHT_CLICK = TRUE))
+	victim.attack_hand(attacker)
 
 	TEST_ASSERT_EQUAL(victim.loc.x, run_loc_bottom_left.x + 2, "Victim wasn't moved back after being pushed")
 	TEST_ASSERT(!victim.has_status_effect(STATUS_EFFECT_KNOCKDOWN), "Victim was knocked down despite not being against a wall")
@@ -91,7 +91,7 @@
 	attacker.forceMove(get_step(attacker, EAST))
 
 	// Second disarm, victim was against wall and should be down
-	victim.attack_hand(attacker, list(RIGHT_CLICK = TRUE))
+	victim.attack_hand(attacker)
 
 	TEST_ASSERT_EQUAL(victim.loc.x, run_loc_bottom_left.x + 2, "Victim was moved after being pushed against a wall")
 	TEST_ASSERT(victim.has_status_effect(STATUS_EFFECT_KNOCKDOWN), "Victim was not knocked down after being pushed against a wall")

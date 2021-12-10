@@ -71,7 +71,7 @@
 		amt += req_components[path]
 	return amt
 
-/obj/structure/frame/machine/attackby(obj/item/P, mob/living/user, params)
+/obj/structure/frame/machine/attackby(obj/item/P, mob/user, params)
 	switch(state)
 		if(1)
 			if(istype(P, /obj/item/circuitboard/machine))
@@ -286,7 +286,7 @@
 						return TRUE
 				to_chat(user, "<span class='warning'>You cannot add that to the machine!</span>")
 				return FALSE
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return ..()
 
 /obj/structure/frame/machine/deconstruct(disassembled = TRUE)

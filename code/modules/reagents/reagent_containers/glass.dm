@@ -9,7 +9,7 @@
 	resistance_flags = ACID_PROOF
 
 
-/obj/item/reagent_containers/glass/attack(mob/M, mob/living/user, obj/target)
+/obj/item/reagent_containers/glass/attack(mob/M, mob/user, obj/target)
 	if(!canconsume(M, user))
 		return
 
@@ -21,16 +21,20 @@
 		return
 
 	if(istype(M))
-		if(M != user)
-			M.visible_message("<span class='danger'>[user] attempts to feed [M] something from [src].</span>", \
-						"<span class='userdanger'>[user] attempts to feed you something from [src].</span>")
-			if(!do_mob(user, M))
-				return
-			if(!reagents || !reagents.total_volume)
-				return // The drink might be empty after the delay, such as by spam-feeding
-			M.visible_message("<span class='danger'>[user] feeds [M] something from [src].</span>", \
-						"<span class='userdanger'>[user] feeds you something from [src].</span>")
-			log_combat(user, M, "fed", reagents.log_list())
+		if(user.a_intent == INTENT_HARM)
+			var/R
+			M.visible_message("<span class='danger'>[user] splashes the contents of [src] onto [M]!</span>", \
+							"<span class='userdanger'>[user] splashes the contents of [src] onto you!</span>")
+			if(reagents)
+				for(var/datum/reagent/A in reagents.reagent_list)
+					R += "[A] ([num2text(A.volume)]),"
+
+			if(isturf(target) && reagents.reagent_list.len && thrownby)
+				log_combat(thrownby, target, "splashed (thrown) [english_list(reagents.reagent_list)]")
+				message_admins("[ADMIN_LOOKUPFLW(thrownby)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] at [ADMIN_VERBOSEJMP(target)].")
+			reagents.expose(M, TOUCH)
+			log_combat(user, M, "splashed", R)
+			reagents.clear_reagents()
 		else
 			to_chat(user, "<span class='notice'>You swallow a gulp of [src].</span>")
 		SEND_SIGNAL(src, COMSIG_GLASS_DRANK, M, user)
@@ -48,7 +52,7 @@
 				if(LAZYLEN(diseases_to_add))
 					AddComponent(/datum/component/infective, diseases_to_add)
 
-/obj/item/reagent_containers/glass/afterattack(obj/target, mob/living/user, proximity)
+/obj/item/reagent_containers/glass/afterattack(obj/target, mob/user, proximity)
 	. = ..()
 	if((!proximity) || !check_allowed_items(target,target_self=1))
 		return
@@ -79,6 +83,13 @@
 
 		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transfered_by = user)
 		to_chat(user, "<span class='notice'>You fill [src] with [trans] unit\s of the contents of [target].</span>")
+
+	else if(reagents.total_volume)
+		if(user.a_intent == INTENT_HARM)
+			user.visible_message("<span class='danger'>[user] splashes the contents of [src] onto [target]!</span>", \
+								"<span class='notice'>You splash the contents of [src] onto [target].</span>")
+			reagents.expose(target, TOUCH)
+			reagents.clear_reagents()
 
 /obj/item/reagent_containers/glass/attackby(obj/item/I, mob/user, params)
 	var/hotness = I.get_temperature()

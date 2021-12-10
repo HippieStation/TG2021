@@ -421,7 +421,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 /obj/machinery/attack_paw(mob/living/user)
-	if(!user.combat_mode)
+	if(user.a_intent != INTENT_HARM)
 		return attack_hand(user)
 	else
 		user.changeNext_move(CLICK_CD_MELEE)

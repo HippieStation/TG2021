@@ -270,7 +270,7 @@
 /mob/living/simple_animal/slime/start_pulling(atom/movable/AM, state, force = move_force, supress_message = FALSE)
 	return
 
-/mob/living/simple_animal/slime/attack_ui(slot, params)
+/mob/living/simple_animal/slime/attack_ui(slot)
 	return
 
 /mob/living/simple_animal/slime/attack_slime(mob/living/simple_animal/slime/M)
@@ -310,7 +310,7 @@
 		return
 	discipline_slime(user)
 
-/mob/living/simple_animal/slime/attack_hand(mob/living/carbon/human/M, modifiers)
+/mob/living/simple_animal/slime/attack_hand(mob/living/carbon/human/M)
 	if(buckled)
 		M.do_attack_animation(src, ATTACK_EFFECT_DISARM)
 		if(buckled == M)
@@ -340,9 +340,9 @@
 				discipline_slime(M)
 	else
 		if(stat == DEAD && surgeries.len)
-			if(!M.combat_mode || LAZYACCESS(modifiers, RIGHT_CLICK))
+			if(M.a_intent == INTENT_HELP || M.a_intent == INTENT_DISARM)
 				for(var/datum/surgery/S in surgeries)
-					if(S.next_step(M, modifiers))
+					if(S.next_step(M,M.a_intent))
 						return 1
 		if(..()) //successful attack
 			attacked += 10
@@ -355,10 +355,9 @@
 
 /mob/living/simple_animal/slime/attackby(obj/item/W, mob/living/user, params)
 	if(stat == DEAD && surgeries.len)
-		var/list/modifiers = params2list(params)
-		if(!user.combat_mode || (LAZYACCESS(modifiers, RIGHT_CLICK)))
+		if(user.a_intent == INTENT_HELP || user.a_intent == INTENT_DISARM)
 			for(var/datum/surgery/S in surgeries)
-				if(S.next_step(user, modifiers))
+				if(S.next_step(user,user.a_intent))
 					return 1
 	if(istype(W, /obj/item/stack/sheet/mineral/plasma) && !stat) //Let's you feed slimes plasma.
 		if (user in Friends)

@@ -24,6 +24,7 @@
 	faction = list("hivebot")
 	check_friendly_fire = 1
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
+	possible_a_intents = list(INTENT_HELP, INTENT_GRAB, INTENT_DISARM, INTENT_HARM)
 	minbodytemp = 0
 	verb_say = "states"
 	verb_ask = "queries"
@@ -43,19 +44,21 @@
 
 /mob/living/simple_animal/hostile/hivebot/Aggro()
 	. = ..()
-	set_combat_mode(TRUE)
-	update_icons()
+	a_intent_change(INTENT_HARM)
 	if(prob(5))
 		say(pick("INTRUDER DETECTED!", "CODE 7-34.", "101010!!"), forced = type)
 
 /mob/living/simple_animal/hostile/hivebot/LoseAggro()
 	. = ..()
-	set_combat_mode(FALSE)
+	a_intent_change(INTENT_HELP)
+
+/mob/living/simple_animal/hostile/hivebot/a_intent_change(input as text)
+	. = ..()
 	update_icons()
 
 /mob/living/simple_animal/hostile/hivebot/update_icons()
 	QDEL_NULL(alert_light)
-	if(combat_mode)
+	if(a_intent != INTENT_HELP)
 		icon_state = "[initial(icon_state)]_attack"
 		alert_light = mob_light(6, 0.4, COLOR_RED_LIGHT)
 	else

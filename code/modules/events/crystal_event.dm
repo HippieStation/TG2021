@@ -653,7 +653,7 @@ This section is for the crystal monsters variations
 	turns_per_move = 1
 	speak_emote = list("resonates")
 	emote_see = list("resonates")
-	combat_mode = TRUE
+	a_intent = INTENT_HARM
 	minbodytemp = 0
 	maxbodytemp = 1500
 	healable = 0 //they're crystals how would bruise packs help them??

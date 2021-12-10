@@ -148,9 +148,11 @@
 
 		// if the target has a weapon, chance to disarm them
 		if(W && DT_PROB(MONKEY_ATTACK_DISARM_PROB, delta_time))
-			monkey_attack(controller, target, delta_time, TRUE)
+			living_pawn.a_intent = INTENT_DISARM
+			monkey_attack(controller, target, delta_time)
 		else
-			monkey_attack(controller, target, delta_time, FALSE)
+			living_pawn.a_intent = INTENT_HARM
+			monkey_attack(controller, target, delta_time)
 
 
 /datum/ai_behavior/monkey_attack_mob/finish_action(datum/ai_controller/controller, succeeded)
@@ -160,7 +162,7 @@
 	controller.blackboard[BB_MONKEY_CURRENT_ATTACK_TARGET] = null
 
 /// attack using a held weapon otherwise bite the enemy, then if we are angry there is a chance we might calm down a little
-/datum/ai_behavior/monkey_attack_mob/proc/monkey_attack(datum/ai_controller/controller, mob/living/target, delta_time, disarm)
+/datum/ai_behavior/monkey_attack_mob/proc/monkey_attack(datum/ai_controller/controller, mob/living/target, delta_time)
 
 	var/mob/living/living_pawn = controller.pawn
 
@@ -173,13 +175,11 @@
 
 	living_pawn.face_atom(target)
 
-	living_pawn.set_combat_mode(TRUE)
-
 	// attack with weapon if we have one
 	if(weapon)
 		weapon.melee_attack_chain(living_pawn, target)
 	else
-		living_pawn.UnarmedAttack(target, null, disarm ? list("right" = TRUE) : null) //Fake a right click if we're disarming
+		living_pawn.UnarmedAttack(target)
 	// no de-aggro
 	if(controller.blackboard[BB_MONKEY_AGRESSIVE])
 		return
@@ -216,6 +216,7 @@
 
 	if(target.pulledby != living_pawn && !HAS_AI_CONTROLLER_TYPE(target.pulledby, /datum/ai_controller/monkey)) //Dont steal from my fellow monkeys.
 		if(living_pawn.Adjacent(target) && isturf(target.loc))
+			living_pawn.a_intent = INTENT_GRAB
 			target.grabbedby(living_pawn)
 		return //Do the rest next turn
 
