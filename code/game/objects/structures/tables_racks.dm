@@ -14,7 +14,7 @@
 
 /obj/structure/table
 	name = "table"
-	desc = "A square piece of iron standing on four metal legs. It can not move."
+	desc = "A square piece of metal standing on four metal legs. It can not move."
 	icon = 'icons/obj/smooth_structures/table.dmi'
 	icon_state = "table-0"
 	base_icon_state = "table"
@@ -22,9 +22,10 @@
 	anchored = TRUE
 	pass_flags_self = PASSTABLE | LETPASSTHROW
 	layer = TABLE_LAYER
+	climbable = TRUE
 	var/frame = /obj/structure/table_frame
 	var/framestack = /obj/item/stack/rods
-	var/buildstack = /obj/item/stack/sheet/iron
+	var/buildstack = /obj/item/stack/sheet/metal
 	var/busy = FALSE
 	var/buildstackamount = 1
 	var/framestackamount = 2
@@ -35,12 +36,6 @@
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_TABLES)
 	canSmoothWith = list(SMOOTH_GROUP_TABLES)
-
-/obj/structure/table/Initialize(mapload, _buildstack)
-	. = ..()
-	if(_buildstack)
-		buildstack = _buildstack
-	AddElement(/datum/element/climbable)
 
 /obj/structure/table/examine(mob/user)
 	. = ..()
@@ -217,12 +212,13 @@
 
 	if(user.a_intent != INTENT_HARM && !(I.item_flags & ABSTRACT))
 		if(user.transferItemToLoc(I, drop_location(), silent = FALSE))
+			var/list/click_params = params2list(params)
 			//Center the icon where the user clicked.
-			if(!LAZYACCESS(modifiers, ICON_X) || !LAZYACCESS(modifiers, ICON_Y))
+			if(!click_params || !click_params["icon-x"] || !click_params["icon-y"])
 				return
 			//Clamp it so that the icon never moves more than 16 pixels in either direction (thus leaving the table turf)
-			I.pixel_x = clamp(text2num(LAZYACCESS(modifiers, ICON_X)) - 16, -(world.icon_size/2), world.icon_size/2)
-			I.pixel_y = clamp(text2num(LAZYACCESS(modifiers, ICON_Y)) - 16, -(world.icon_size/2), world.icon_size/2)
+			I.pixel_x = clamp(text2num(click_params["icon-x"]) - 16, -(world.icon_size/2), world.icon_size/2)
+			I.pixel_y = clamp(text2num(click_params["icon-y"]) - 16, -(world.icon_size/2), world.icon_size/2)
 			AfterPutItemOnTable(I, user)
 			return TRUE
 	else
@@ -295,8 +291,8 @@
 
 /obj/structure/table/rolling/Moved(atom/OldLoc, Dir)
 	. = ..()
-	for(var/mob/living/living_mob in OldLoc.contents)//Kidnap everyone on top
-		living_mob.forceMove(loc)
+	for(var/mob/M in OldLoc.contents)//Kidnap everyone on top
+		M.forceMove(loc)
 	for(var/x in attached_items)
 		var/atom/movable/AM = x
 		if(!AM.Move(loc))
@@ -692,7 +688,7 @@
 
 /obj/item/rack_parts/attackby(obj/item/W, mob/user, params)
 	if (W.tool_behaviour == TOOL_WRENCH)
-		new /obj/item/stack/sheet/iron(user.loc)
+		new /obj/item/stack/sheet/metal(user.loc)
 		qdel(src)
 	else
 		. = ..()
