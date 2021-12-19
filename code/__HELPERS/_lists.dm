@@ -2,7 +2,7 @@
  * Holds procs to help with list operations
  * Contains groups:
  *			Misc
- *			Sorting
+ *			Sorting cock
  */
 
 /*
